@@ -1,3 +1,6 @@
+![Auth Form Design](https://user-images.githubusercontent.com/66327336/144212043-4d944ac2-eaf0-4ef5-b846-7858dd4b216a.png)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
