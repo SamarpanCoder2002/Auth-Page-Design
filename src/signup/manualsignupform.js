@@ -2,6 +2,7 @@ import { useState } from "react";
 import passwordStrengthChecker from "../common/passwordstrengthcheck";
 import { ProgressBarFlexible } from "../common/progresscomponent";
 import { generateMultiple, generate } from "generate-password";
+import { useNavigate } from "react-router-dom";
 
 const SignUpFormContainer = () => {
   // For Handling Eye-shield of two password-field
@@ -9,6 +10,7 @@ const SignUpFormContainer = () => {
   const [percentage, setpercentage] = useState(0);
   const [suggestedPassword, setsuggestedPassword] = useState([]);
   const [confirmPasswordErrorMsg, setconfirmPasswordErrorMsg] = useState();
+  const [successMsg, setsuccessMsg] = useState();
   const [signupForm, setsignupForm] = useState({
     email: "",
     password: "",
@@ -42,9 +44,14 @@ const SignUpFormContainer = () => {
     if (password !== confirmPassword) {
       setconfirmPasswordErrorMsg("Password and Confirm Password not matching");
     } else {
-      setconfirmPasswordErrorMsg("");
+      if (email && password && confirmPassword) {
+        setconfirmPasswordErrorMsg("");
+        setsuccessMsg("Sign up Successful");
+      }
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="container py-5 h-100">
@@ -65,6 +72,24 @@ const SignUpFormContainer = () => {
               </div>
               <div className="col-md-6 col-lg-7 d-flex align-items-center">
                 <div className="card-body p-4 p-lg-5 text-black">
+                  {successMsg && (
+                    <div
+                      className="p-3 mb-3 text-center text-white"
+                      style={{ background: "#4dd637" }}
+                    >
+                      <h4>{successMsg}</h4>
+                    </div>
+                  )}
+
+                  {confirmPasswordErrorMsg && (
+                    <div
+                      className="p-3 mb-3 text-center text-white"
+                      style={{ background: "#B4161B" }}
+                    >
+                      <h5>{confirmPasswordErrorMsg}</h5>
+                    </div>
+                  )}
+
                   <form>
                     {/* Heading */}
                     <div className="d-flex align-items-center mb-3 pb-1">
@@ -83,6 +108,10 @@ const SignUpFormContainer = () => {
                         name="email"
                         value={email}
                         onChange={handleChange}
+                        onClick={() => {
+                          setconfirmPasswordErrorMsg("");
+                          setsuccessMsg("");
+                        }}
                         required
                       />
                     </div>
@@ -98,6 +127,9 @@ const SignUpFormContainer = () => {
                         required
                         value={password}
                         onClick={() => {
+                          setconfirmPasswordErrorMsg("");
+                          setsuccessMsg("");
+
                           let passwordCollection = [];
 
                           const collection = generateMultiple(3, {
@@ -120,7 +152,7 @@ const SignUpFormContainer = () => {
                         onChange={(e) => {
                           confirmPasswordErrorMsg &&
                             setconfirmPasswordErrorMsg("");
-                            
+
                           handleChange(e);
                           setpercentage(
                             passwordStrengthChecker(e.target.value)
@@ -153,6 +185,10 @@ const SignUpFormContainer = () => {
                         name="confirmPassword"
                         value={confirmPassword}
                         onChange={handleChange}
+                        onClick={() => {
+                          setconfirmPasswordErrorMsg("");
+                          setsuccessMsg("");
+                        }}
                         required
                       />
 
@@ -173,14 +209,6 @@ const SignUpFormContainer = () => {
                         </a>
                       </div>
                     </div>
-                    {confirmPasswordErrorMsg && (
-                      <div
-                        className="text-danger fs-5 fw-bold text-center mt-4"
-                        style={{ background: " rgba(256,256,256,0.8)" }}
-                      >
-                        {confirmPasswordErrorMsg}
-                      </div>
-                    )}
 
                     {/* Submit Button */}
                     <div className="pt-1 my-4">
@@ -194,12 +222,19 @@ const SignUpFormContainer = () => {
                     </div>
 
                     {/* For Switch to LogIn Page */}
-                    <p className="text-center text-white fs-6">
+                    <div className="text-center text-white fs-6">
                       Already have an account?{" "}
-                      <a href="/signin" className="fw-bold">
+                      <div
+                        href="/signin"
+                        className="fw-bold d-inline"
+                        style={{ color: "yellow", cursor: "pointer" }}
+                        onClick={() => {
+                          navigate("/signin");
+                        }}
+                      >
                         Login
-                      </a>
-                    </p>
+                      </div>
+                    </div>
 
                     {/* Password Strengh Bar */}
                     <div className="form-outline mt-3">

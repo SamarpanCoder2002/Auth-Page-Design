@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import passwordStrengthChecker from "../common/passwordstrengthcheck";
 import { ProgressBarFlexible } from "../common/progresscomponent";
 
@@ -20,6 +21,8 @@ const SignInFormContainer = () => {
       eye[eyeClass].classList.add("fa-eye-slash");
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="container py-5 h-100">
@@ -103,7 +106,17 @@ const SignInFormContainer = () => {
 
                     {/* For Switch to LogIn Page */}
                     <p className="text-center text-white fs-6">
-                      Don't have an account? <a href="/signup">Signup</a>
+                      Don't have an account?{" "}
+                      <div
+                        href="/signup"
+                        className="fw-bold d-inline"
+                        style={{ color: "yellow", cursor: "pointer" }}
+                        onClick={() => {
+                          navigate("/signup");
+                        }}
+                      >
+                        Signup
+                      </div>
                     </p>
 
                     <div className="form-outline mt-5 mb-4">
